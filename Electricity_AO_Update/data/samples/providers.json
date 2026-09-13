@@ -1,0 +1,17 @@
+[
+  {
+    "provider_id": "txu_sample",
+    "company": "TXU Energy Retail Company LLC",
+    "contract_path": "data/samples/txu.pdf"
+  },
+  {
+    "provider_id": "gexa_sample",
+    "company": "Gexa Energy, LP",
+    "contract_path": "data/samples/gexa.pdf"
+  },
+  {
+    "provider_id": "constellation_sample",
+    "company": "Constellation NewEnergy, Inc.",
+    "contract_path": "data/samples/constellation.pdf"
+  }
+]

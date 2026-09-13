@@ -1,0 +1,4 @@
+[
+  {"provider_id": "company_a", "company": "Exact Company A Name", "contract_path": "data/private/company_a.pdf"},
+  {"provider_id": "company_b", "company": "Exact Company B Name", "contract_path": "data/private/company_b.pdf"}
+]
