@@ -1,0 +1,58 @@
+Name: Allen Huan Bui
+
+Contact:
+Email: allenhuanbui@gmail.com
+Phone: 832-546-9998
+
+Summary:
+Allen Huan Bui is a computer science student at the University of Houston with experience building AI-assisted software workflows, multi-agent document processing systems, and practical automation tools. He has worked with Python, LangChain, LangGraph, OpenAI, Azure OpenAI, PyMuPDF, Pydantic, and pandas.
+
+Education:
+Institution: University of Houston, College of Natural Sciences and Mathematics
+Degree: Bachelor of Science in Computer Science
+Expected Graduation: May 2028
+Cumulative GPA: 3.7
+Honors: Dean's List for Fall 2024 and Spring 2025
+
+Projects:
+Project: Agentic Invoice Reconciliation System
+Role: Personal project / Software AI Engineer
+Description:
+Allen architected a multi-agent document intelligence pipeline in Python using LangChain, agentic orchestration, and Azure OpenAI. The system parses invoices, purchase orders, goods receipt notes, and contracts from unstructured PDFs into structured data using Pydantic models.
+Key Details:
+- Used GPT-5, PyMuPDF, and Pydantic.
+- Implemented four specialized LLM parsing agents with structured output and function calling.
+- Supported automated 3-way and 4-way match validation across quantity, pricing, and contract terms.
+
+Project: Electricity Agreement Optimizer
+Role: Personal project / Software AI Engineer
+Description:
+Allen built a LangGraph-based multi-agent supervisor system in Python using OpenAI, PyMuPDF, and Pydantic. The system extracts key terms from electricity utility agreements across multiple providers and compares them against the previous 12 months of usage to identify the best-fit plan.
+Key Details:
+- Applied GPT-5 to optimize contract terms.
+- Designed the system to give consumers actionable insights and negotiation leverage.
+
+Work Experience:
+Company: Yomie's Rice & Yogurt
+Location: Sugar Land, Texas
+Role: Team Member
+Dates: August 2023 to Present
+Responsibilities:
+- Processed more than 80 daily transactions accurately using a POS system in a fast-paced environment.
+- Prepared customized beverages while maintaining quality, cleanliness, and safety standards.
+- Supported peak-hour operations through teamwork, restocking, and inventory monitoring.
+
+Technical Skills:
+Programming Languages: Python, C++, Java, Angular, JavaScript, CSS, HTML
+Tools and Platforms: LangChain, LangGraph, OpenAI, Azure OpenAI, GitHub, Jupyter Notebook, Visual Studio Code, Microsoft Office, Google Workspace
+Libraries and Frameworks: pandas, PyMuPDF, Pydantic
+Core Skills: Software engineering, artificial intelligence, machine learning, data science, computer vision
+
+Leadership and Activities:
+Organization: University of Houston Vietnamese Student Association
+Role: Family Leader and Intern
+Dates: Fall 2026 to Spring 2027
+Responsibilities:
+- Leads a cohort of UHVSA members by organizing recurring social events, study sessions, and community-building activities.
+- Supports officers with event planning, logistics, and meeting preparation.
+- Contributes to cultural, service, and fundraising initiatives that promote campus involvement and celebrate Vietnamese culture.

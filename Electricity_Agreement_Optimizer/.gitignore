@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+output/
+tmp/
+.ipynb_checkpoints/
+# Agreements may contain personal information.
+contracts/

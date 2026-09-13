@@ -1,0 +1,11 @@
+ipykernel
+jupyter
+langchain
+langchain-openai
+langgraph-prebuilt
+langgraph-supervisor
+openai
+pandas
+pydantic
+python-dotenv
+pymupdf

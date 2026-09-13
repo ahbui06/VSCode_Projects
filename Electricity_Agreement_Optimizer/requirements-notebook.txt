@@ -1,0 +1,5 @@
+-r requirements.txt
+ipykernel>=6.30,<8
+nbformat>=5.10,<6
+nbclient>=0.10,<1
+ipywidgets>=8,<9
