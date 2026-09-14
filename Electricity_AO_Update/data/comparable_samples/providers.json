@@ -1,0 +1,12 @@
+[
+  {
+    "provider_id": "gexa_saver_12_centerpoint",
+    "company": "Gexa Energy, LP",
+    "contract_path": "data/comparable_samples/gexa_saver_12_centerpoint.pdf"
+  },
+  {
+    "provider_id": "gexa_saver_24_centerpoint",
+    "company": "Gexa Energy, LP",
+    "contract_path": "data/comparable_samples/gexa_saver_24_centerpoint.pdf"
+  }
+]

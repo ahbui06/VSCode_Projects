@@ -7,7 +7,7 @@ from electricity_ao.costs import estimate
 from electricity_ao.demo import create_demo, demo_terms
 from electricity_ao.documents import load_usage, read_pdf
 from electricity_ao.models import Preferences, UsageHistory
-from electricity_ao.workflow import build_graph
+from electricity_ao.workflow import build_graph, evidence_issues
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -84,3 +84,22 @@ def test_missing_rate_and_short_term_are_rejected():
     plan.term_months = 6
     with pytest.raises(ValueError, match="Missing required term"):
         estimate("test", plan, load_usage(ROOT / "data/usage_example.csv"), Preferences())
+
+
+def test_plan_without_bill_credit_is_supported():
+    plan = demo_terms("No Credit", 8)
+    plan.credit_usd = None
+    plan.credit_min_kwh = None
+    result = estimate("no_credit", plan, load_usage(ROOT / "data/usage_example.csv"), Preferences())
+    assert result.annual_usd > 0
+
+
+def test_pdf_table_interleaving_does_not_invalidate_quote():
+    providers, backend = create_demo(ROOT)
+    plan = backend.plans["prairie"]
+    plan.evidence[0].quote = "alpha beta gamma"
+    from electricity_ao.models import ProviderResult
+    result = ProviderResult(provider_id="prairie", terms=plan,
+                            pages=["alpha inserted table label beta gamma"], issues=[])
+    # Other fixture evidence is absent, but the interleaved quote itself passes.
+    assert "Unverifiable source quote for provider" not in evidence_issues(result)

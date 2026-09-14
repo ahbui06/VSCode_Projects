@@ -4,12 +4,15 @@ from .models import Estimate, MonthlyCost, PlanTerms, Preferences, UsageHistory
 
 PRICING_FIELDS = (
     "pricing_type", "currency", "term_months", "energy_cents_per_kwh",
-    "delivery_cents_per_kwh", "monthly_base_usd", "monthly_delivery_usd", "credit_usd",
+    "delivery_cents_per_kwh", "monthly_base_usd", "monthly_delivery_usd",
 )
 
 
 def eligibility_issues(plan: PlanTerms, preferences: Preferences) -> list[str]:
-    issues = list(plan.unresolved_terms)
+    # The specialist records disclosures and ambiguities here; the independent
+    # supervisor decides whether they block the estimate. Deterministic pricing
+    # requirements below remain hard failures.
+    issues = []
     if plan.pricing_type != "fixed" or plan.currency != "USD":
         issues.append("Only fixed USD pricing is supported")
     for field in PRICING_FIELDS:

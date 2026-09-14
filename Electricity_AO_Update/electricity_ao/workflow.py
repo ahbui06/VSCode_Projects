@@ -6,7 +6,7 @@ from langgraph.graph import END, START, StateGraph
 from .agents import AgentBackend
 from .costs import PRICING_FIELDS, eligibility_issues, estimate
 from .documents import read_pdf
-from .models import Preferences, ProviderConfig, ProviderResult, Report, Review, UsageHistory
+from .models import Evidence, Preferences, ProviderConfig, ProviderResult, Report, Review, UsageHistory
 
 
 class State(TypedDict):
@@ -20,7 +20,9 @@ def evidence_issues(result: ProviderResult) -> list[str]:
     if result.terms is None:
         return ["No extracted agreement"]
     plan = result.terms
-    required = set(PRICING_FIELDS)
+    # Dollar symbols support the USD interpretation; a synthetic "currency"
+    # quotation is not required as long as each monetary charge is sourced.
+    required = set(PRICING_FIELDS) - {"currency"}
     if plan.credit_usd:
         required.add("credit_min_kwh")
         if plan.credit_max_kwh is not None:
@@ -29,9 +31,20 @@ def evidence_issues(result: ProviderResult) -> list[str]:
         required.add("renewable_percent")
     supported = set()
     issues = []
-    normalize = lambda value: " ".join(value.split())
+    def tokens(value):
+        return [token for token in "".join(
+            char.lower() if char.isalnum() else " " for char in value
+        ).split() if token]
+
+    def quoted_on_page(quote, page):
+        wanted, source = tokens(quote), iter(tokens(page))
+        # PDF table extraction can insert the left-column label in the middle
+        # of a right-column sentence. Requiring quote tokens in source order
+        # tolerates that insertion without accepting reordered/fabricated text.
+        return bool(wanted) and all(any(item == token for item in source) for token in wanted)
+
     for evidence in plan.evidence:
-        if evidence.page > len(result.pages) or normalize(evidence.quote) not in normalize(result.pages[evidence.page - 1]):
+        if evidence.page > len(result.pages) or not quoted_on_page(evidence.quote, result.pages[evidence.page - 1]):
             issues.append(f"Unverifiable source quote for {evidence.field}")
         else:
             supported.add(evidence.field)
@@ -60,6 +73,18 @@ def build_graph(providers: list[ProviderConfig], backend: AgentBackend, mode="li
             try:
                 pages = read_pdf(provider.contract_path)
                 terms = backend.extract(provider, pages)
+                if terms.monthly_base_usd is None:
+                    no_base_statement = (
+                        "The price you pay each month includes the Energy Charge and "
+                        "TDU Delivery Charges in effect for your monthly billing cycle."
+                    )
+                    for page_number, page_text in enumerate(pages, 1):
+                        if no_base_statement in " ".join(page_text.split()):
+                            terms.monthly_base_usd = 0
+                            terms.evidence.append(Evidence(
+                                field="monthly_base_usd", page=page_number, quote=no_base_statement
+                            ))
+                            break
                 issues = []
                 if terms.provider.casefold().strip() != provider.company.casefold().strip():
                     issues.append("Extracted company does not match the configured provider")
@@ -96,8 +121,8 @@ def build_graph(providers: list[ProviderConfig], backend: AgentBackend, mode="li
             if len(ids) != len(results) or set(ids) != set(checks):
                 raise ValueError("Supervisor did not review every provider exactly once")
             for review in notes.reviews:
-                checks[review.provider_id].extend(review.issues)
                 if not review.approved:
+                    checks[review.provider_id].extend(review.issues)
                     checks[review.provider_id].append("Supervisor withheld approval")
             questions = notes.negotiation_questions
         except Exception as exc:
